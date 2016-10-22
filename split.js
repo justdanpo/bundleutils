@@ -38,7 +38,6 @@ for (module in bundle.modules) {
         });
     }
 
-    if (fname in filesSaved) console.log(fname + ' has been overwritten');
     filesSaved[fname] = true;
 
     fs.writeFileSync(fname, contents, 'utf8');
