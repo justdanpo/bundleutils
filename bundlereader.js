@@ -309,7 +309,7 @@ var webpackJsonp = function(chunkIds, modules) {
 
     _modules = modules;
     for (m in vendorBundleModules) _modules[m] = vendorBundleModules[m];
-    for (m in browserBundleModules) _modules[m] = browserBundleModules[m];
+    for (m in browserBundleModules) _modules['browser-bundle-' + m] = browserBundleModules[m];
 
     _modules.forEach(function(mod, modIndex) {
         var fntxt = ('' + mod);
