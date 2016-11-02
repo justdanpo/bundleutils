@@ -129,7 +129,7 @@ var webpackJsonp = function(chunkIds, modules) {
         "_treeSort": ['treeSort:', 'getDefaultComparator:'],
         "_clone": ['typeof Symbol.iterator', '"function"', '"symbol"', '"function"', '"object"', '.constructor()', '.hasOwnProperty('],
         "_getPrintableKeyName": ['"BrowserForward"', '"PrintScreen"'],
-        "_updatePage": ['.tabToPage', '.updatePage', '.merge(JSON.parse('],
+        "_updatePage": ['.tabToPage', '.updatePage', 'JSON.parse(', '"favIconUrl"'],
         "_bytes": ['hexToBytes:', 'bytesToHex:'],
         "_execScriptWrapper": ['typeof execScript', 'execScript(', 'eval.call('], //browser-bundle.js
         "_readability_js": ['Copyright (c) 2010 Arc90 Inc'], //browser-bundle.js
