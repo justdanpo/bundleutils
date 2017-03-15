@@ -148,8 +148,8 @@ var updatePatch = function(fname) {
                     var oldpattern = escapedold.replace(/\b[A-Z_\$]{1,2}\b/gi, "([A-Za-z_\\$]{1,2})");
 
                     lregexp.forEach(function(re) {
-                        var matchlre = oldpattern.match(re);
-                        if (matchlre) {
+                        var matchlre;
+                        while (matchlre = oldpattern.match(re)) {
                             oldpattern = oldpattern.replace(matchlre[0], re);
                         }
                     });
