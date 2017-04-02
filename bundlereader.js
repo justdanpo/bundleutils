@@ -54,6 +54,7 @@ function processModules() {
         "TypedHistory": ['typedhistory.jsx'],
         "UrlBar": ['urlbar.jsx'],
         "UrlField": ['urlfield.jsx'],
+        "NativeResizeObserver": ['NativeResizeObserver.js'],
 
         "nm_immutable": ["Expected Array or iterable object of [k, v] entries"], //node_modules\immutable\dist\immutable.js
         "nm_buffer": ["The buffer module from node.js"],
@@ -345,7 +346,11 @@ function processModules() {
                 break;
             }
         }
+    }
 
+    //wrappers
+    for (var modIndex in _modules) {
+        var fntxt = ('' + _modules[modIndex]);
         var n = fntxt.match(/\.exports\s*=\s*n\((\d+)\)/);
         if (n) {
             var wrapNum = n[1];
