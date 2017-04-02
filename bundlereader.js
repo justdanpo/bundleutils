@@ -336,7 +336,7 @@ function processModules() {
                     return -1 === fntxt.indexOf(i)
                 }).length) {
 
-                if ("undefined" !== typeof _moduleMap[moduleName])
+                if (("undefined" !== typeof _moduleMap[moduleName]) && (_moduleMap[moduleName] != modIndex))
                     console.log('jdhooks: repeated module name "' + moduleName + '"');
 
                 _moduleMap[moduleName] = modIndex;
