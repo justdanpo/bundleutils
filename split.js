@@ -12,9 +12,12 @@ if (!fs.existsSync("jsout_num"))
 
 var filesSaved = {};
 
+var bundleModulesCount = Object.keys(bundle.modules).length;
+var bundleModuleIndex = 0;
+
 for (module in bundle.modules) {
 
-    process.stdout.write(module + "/" + bundle.modules.length + '\r');
+    process.stdout.write(++bundleModuleIndex + "/" + bundleModulesCount + '\r');
 
     var fname = "jsout_name/" + (undefined !== bundle.namebynum[module] ? bundle.namebynum[module] : module) + ".js";
     var fnumname = "jsout_num/" + module + (undefined !== bundle.namebynum[module] ? "." + bundle.namebynum[module] : "") + ".js";

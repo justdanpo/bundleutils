@@ -2,18 +2,13 @@ const fs = require('fs');
 
 var _moduleMap = {};
 var _moduleNames = {};
-var _modules;
+var _modules = {};
 
-var vendorbundle = fs.readFileSync('vendor-bundle.js', 'utf8');
-vendorbundle = 'var vendorBundleModules=' + vendorbundle.substr(vendorbundle.indexOf('}([') + 1);
-eval(vendorbundle);
+function webpackJsonp(chunkIds, modules) {
+    for (var m in modules) _modules[m] = modules[m];
+}
 
-var browserbundle = fs.readFileSync('browser-bundle.js', 'utf8');
-browserbundle = 'var browserBundleModules=' + browserbundle.substr(browserbundle.indexOf('}({') + 1);
-eval(browserbundle);
-
-var webpackJsonp = function(chunkIds, modules) {
-
+function processModules() {
     //-build module names--------------------------------------------------
 
     var moduleSignatures = {
@@ -44,6 +39,21 @@ var webpackJsonp = function(chunkIds, modules) {
         "css-layout": ['computeLayout:', 'fillNodes:'],
         "WebPageContent": ['WebPageContent.jsx'],
         "WebPageCollection": ['WebPageCollection.jsx'],
+        "BlockedContentNotificator": ['BlockedContentNotificator.jsx'],
+        "LocationPermissionDialog": ['locationPermissionDialog.jsx'],
+        "LocationPermissionNotificator": ['locationPermissionNotificator.jsx'],
+        "MediaPermissionDialog": ['mediaPermissionDialog.jsx'],
+        "MediaPermissionNotificator": ['mediaPermissionNotificator.jsx'],
+        "NotificationPermissionDialog": ['notificationPermissionDialog.jsx'],
+        "NotificationPermissionNotificator": ['notificationPermissionNotificator.jsx'],
+        "OmniDropdown": ['omnidropdown.jsx'],
+        "PopupBlockerDialog": ['popupblockerDialog.jsx'],
+        "PopupBlockerNotificator": ['popupblockerNotificator.jsx'],
+        "SearchField": ['searchfield.jsx'],
+        "SiteInfoButton": ['SiteInfoButton.jsx'],
+        "TypedHistory": ['typedhistory.jsx'],
+        "UrlBar": ['urlbar.jsx'],
+        "UrlField": ['urlfield.jsx'],
 
         "nm_immutable": ["Expected Array or iterable object of [k, v] entries"], //node_modules\immutable\dist\immutable.js
         "nm_buffer": ["The buffer module from node.js"],
@@ -138,6 +148,7 @@ var webpackJsonp = function(chunkIds, modules) {
         "_readability_js": ['Copyright (c) 2010 Arc90 Inc'], //browser-bundle.js
         "_purify_js": ['.DOMPurify', './dist/purify.'], //browser-bundle.js
         "_requestIdleCallback": ['return window.requestIdleCallback'],
+        "_UrlValidation": ['ensureURLProtocol', 'isValidURL', 'hasUnknownProtocol', 'removeProtocol'],
 
         "vivaldi": ["bookmarksPrivate:"],
         "vivaldiWrapper": ["window.vivaldi?"], //doesn't work for beautified code
@@ -306,48 +317,36 @@ var webpackJsonp = function(chunkIds, modules) {
         "react_ViewportMetrics": ["currentScrollLeft:"],
     };
 
-    _modules = modules;
-    for (m in vendorBundleModules) _modules[m] = vendorBundleModules[m];
-    for (m in browserBundleModules) _modules['browser-bundle-' + m] = browserBundleModules[m];
+    for (var modIndex in _modules) {
 
-    _modules.forEach(function(mod, modIndex) {
-        var fntxt = ('' + mod);
+        //displayName
+        var fntxt = ('' + _modules[modIndex]);
         var idx = fntxt.indexOf('displayName');
         if (idx > -1) {
-            var n = fntxt.substring(idx).match(/displayName\s*[:=]\s*"(.*?)"/);
+            var n = fntxt.substring(idx - 1).match(/[^\.]displayName\s*[:=]\s*"(.*?)"/);
             if (n) {
                 _moduleMap[n[1]] = modIndex;
                 _moduleNames[modIndex] = n[1];
             }
         }
-    });
 
-    for (var moduleName in moduleSignatures) {
-        var idx = Object.keys(_modules).filter(function(key) {
-            var fntxt = ('' + _modules[key]);
+        //signatures
+        for (var moduleName in moduleSignatures) {
+            if (0 === moduleSignatures[moduleName].filter(function(i) {
+                    return -1 === fntxt.indexOf(i)
+                }).length) {
 
-            for (var moduleDescItm in moduleSignatures[moduleName]) {
-                if (-1 === fntxt.indexOf(moduleSignatures[moduleName][moduleDescItm]))
-                    return false;
+                if ("undefined" !== typeof _moduleMap[moduleName])
+                    console.log('jdhooks: repeated module name "' + moduleName + '"');
+
+                _moduleMap[moduleName] = modIndex;
+                _moduleNames[modIndex] = moduleName;
+
+                break;
             }
-            return true;
-        });
-
-        if (idx.length > 1)
-            console.log('multiple signature matching: ', moduleName, idx);
-
-        if (idx.length > 0) {
-            if ("undefined" !== typeof _moduleMap[moduleName])
-                console.log('jdhooks: repeated module name "' + moduleName + '"');
-            _moduleMap[moduleName] = idx[0];
-            for (idxn in idx)
-                _moduleNames[idx[idxn]] = moduleName;
-        } else {
-            console.log('unknown module ', moduleName);
         }
-    }
-    _modules.forEach(function(mod, modIndex) {
-        var n = ("" + mod).match(/\.exports\s*=\s*n\((\d+)\)/);
+
+        var n = fntxt.match(/\.exports\s*=\s*n\((\d+)\)/);
         if (n) {
             var wrapNum = n[1];
             if ("undefined" !== typeof _moduleNames[wrapNum]) {
@@ -356,12 +355,36 @@ var webpackJsonp = function(chunkIds, modules) {
                 _moduleNames[modIndex] = moduleName;
             }
         }
-    });
+    }
 
+    var unknownModules = {};
+    for (var sigModuleName in moduleSignatures)
+        if (!_moduleMap[sigModuleName])
+            console.log('jdhooks: unknown module', sigModuleName);
 };
 
-var bundle = fs.readFileSync('bundle.js', 'utf8');
-eval(bundle);
+
+function loadBundleFile(file) {
+    if (!fs.existsSync(file))
+        return;
+
+    var fileContents = fs.readFileSync(file, 'utf8');
+    if (0 === fileContents.indexOf('webpackJsonp(')) {
+        eval(fileContents);
+    } else if (0 === fileContents.search(/^(!function\((\w+)\)\{)/)) {
+        var bundleModules = {};
+        eval(fileContents.replace(/^(!function\((\w+)\)\{)/, "$1bundleModules=$2;return;"));
+        for (var m in bundleModules) _modules[m] = bundleModules[m];
+    } else {
+        console.log('cannot parse ' + file);
+    }
+    return fileContents;
+}
+
+loadBundleFile('background-common-bundle.js');
+loadBundleFile('vendor-bundle.js');
+var bundle = loadBundleFile('bundle.js');
+processModules();
 
 module.exports = {
     numbyname: _moduleMap,
