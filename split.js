@@ -32,7 +32,7 @@ for (module in bundle.modules) {
         n = nMatched[1];
     }
 
-    contents = beautify(contents);
+    contents = beautify("//n(" + module + ")\n" + contents);
 
     if (n) {
         contents = contents.replace(new RegExp('\\b' + n + '\\((\\d+)\\)', 'g'), function(str, modnum) {

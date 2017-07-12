@@ -1,0 +1,10 @@
+{
+  "name": "bundleutils",
+  "version": "0.0.1",
+  "description": "bundleutils",
+  "main": "split.js",
+  "author": "den_po",
+  "devDependencies": {
+    "js-beautify": ""
+  }
+}

@@ -4,6 +4,8 @@ var _moduleMap = {};
 var _moduleNames = {};
 var _modules = {};
 
+const fastProcessModules = false;
+
 function webpackJsonp(chunkIds, modules) {
     for (var m in modules) _modules[m] = modules[m];
 }
@@ -11,227 +13,254 @@ function webpackJsonp(chunkIds, modules) {
 function processModules() {
     //-build module names--------------------------------------------------
 
+    var jsxNames = {
+        "ApplySearchFilter": "applySearchFilter.js",
+
+        "ActionItem": "page-actions/ActionItem.jsx",
+        "ActionLog": "ActionLog.jsx",
+        "AddressBar": "AddressBar.jsx",
+        "AddressBarDropdown": "AddressBarDropdown.jsx",
+        "AddWebPanelButton": "addWebPanelButton.jsx",
+        "AttachmentContainer": "notesAttachmentContainer.jsx",
+        "AttachmentItem": "notesAttachment.jsx",
+        "AudioIcon": "AudioIcon.jsx",
+        "autoupdate": "Autoupdate.jsx",
+        "BackgroundTaskStatus": "BackgroundTaskStatus.jsx",
+        "BackgroundTaskStatusList": "BackgroundTaskStatusList.jsx",
+        "BiscuitSettings": "BiscuitMode.jsx",
+        "BlockedContentNotificator": "BlockedContentNotificator.jsx",
+        "BookmarkBar": "BookmarkBar.jsx",
+        "BookmarkEditItem": "BookmarkEditItem.jsx",
+        "BookmarksBar": "bookmarksbar.jsx",
+        "BookmarksBarItem": "bookmarksbarItem.jsx",
+        "BookmarkSettings": "BookmarkSettings.jsx",
+        "BookmarksFoldersFlatList": "bookmarksfoldersflatlist.jsx",
+        "BookmarksManager": "bookmarks-manager.jsx",
+        "BookmarksPanel": "bookmarksPanel.jsx",
+        "BookmarkTree": "BookmarkTree.jsx",
+        "capture": "Capture.jsx",
+        "CaptureImages": "CaptureImages.jsx",
+        "ClearBrowsingHistory": "ClearBrowsingHistory.jsx",
+        "ClearBrowsingHistoryDialog": "ClearBrowsingHistoryDialog.jsx",
+        "ColorPicker": "ColorPicker.jsx",
+        "ConfigureSingleKeyShortcut": "ConfigureSingleKeyShortcuts.jsx",
+        "ConfirmationDlg": "ConfirmationDlg.jsx",
+        "ConfirmOpenBookmarksDialog": "confirmOpenBookmarksDialog.jsx",
+        "ContactPhotoPicker": "ContactPhotoPicker.jsx",
+        "ContactsPanel": "ContactsPanel.jsx",
+        "ContactTree": "ContactTree.jsx",
+        "ContactView": "ContactView.jsx",
+        "CookieItem": "CookieItem.jsx",
+        "CookieManager": "cookieManager.jsx",
+        "CookieManagerDialog": "cookieManagerDlg.jsx",
+        "CookieSettings": "cookieSettings.jsx",
+        "CreateBookmark": "createbookmark.jsx",
+        "CreateSearchEngine": "createSearchEngine.jsx",
+        "CreateSearchEngineDlg": "createSearchEngineDlg.jsx",
+        "DefaultGlobalZoom": "defaultGlobalZoom.jsx",
+        "DialogRenderWrapper": "dialogRenderWrapper.jsx",
+        "dockedDevTools": "dockedDevTools.jsx",
+        "DownloadDialog": "downloadDialog.jsx",
+        "DownloadItem": "DownloadItem.jsx",
+        "DownloadPanel": "DownloadPanel.jsx",
+        "DownloadSettings": "downloads.jsx",
+        "DownloadTree": "downloadTree.jsx",
+        "ExperimentItem": "ExperimentItem.jsx",
+        "Experiments": "experiments.jsx",
+        "ExtensionActionItem": "ExtensionActionItem.jsx",
+        "ExtensionActionPopup": "ExtensionActionPopup.jsx",
+        "ExtensionActionToolbar": "ExtensionActionToolbar.jsx",
+        "FindInPage": "find-in-page.jsx",
+        "FocusTrap": "FocusTrap.jsx",
+        "FolderIcon": "FolderIcon.jsx",
+        "Fonts": "fonts.jsx",
+        "FullKeyAccess": "FullKeyAccess.jsx",
+        "FullscreenInfoBubble": "fullscreeninfobubble.jsx",
+        "FullscreenSettings": "fullscreen.jsx",
+        "HistoryFolder": "HistoryFolder.jsx",
+        "HistoryItem": "history/HistoryItem.jsx",
+        "HistoryManager": "HistoryManager.jsx",
+        "HistoryMoreInfo": "HistoryMoreInfo.jsx",
+        "HistoryPanel": "HistoryPanel.jsx",
+        "HistorySearch": "HistorySearch.jsx",
+        "HistorySetting": "HistorySetting.jsx",
+        "HistoryStoreSubscription": "HistoryStoreSubscription.jsx",
+        "HistoryTree": "HistoryTree.jsx",
+        "HomePageSetting": "homePageSetting.jsx",
+        "HueIntegration": "HueIntegration.jsx",
+        "ImportBookmarks": "importBookmarks.jsx",
+        "InfoBar": "InfoBar.jsx",
+        "InsertThemeWrapper": "InsertTheme.jsx",
+        "InternalPage": "InternalPage.jsx",
+        "JavascriptDialog": "javascriptDialog.jsx",
+        "Keyboard": "Keyboard.jsx",
+        "LanguageSetting": "languageSetting.jsx",
+        "LocationPermissionDialog": "locationPermissionDialog.jsx",
+        "LocationPermissionNotificator": "locationPermissionNotificator.jsx",
+        "MailAccountForm": "MailAccountForm.jsx",
+        "MailAccountRemovalDlg": "MailAccountRemovalDlg.jsx",
+        "MailAccountSaveDlg": "MailAccountSaveDlg.jsx",
+        "MailBar": "MailBar.jsx",
+        "MailBarComposer": "MailBarComposer.jsx",
+        "MailBarList": "MailBarList.jsx",
+        "MailComposer": "MailComposer.jsx",
+        "MailCustomFlagDlg": "MailCustomFlagDlg.jsx",
+        "MailDetail": "MailDetail.jsx",
+        "MailEntryHorizontal": "MailEntryHorizontal.jsx",
+        "MailEntryVertical": "MailEntryVertical.jsx",
+        "MailFilterManager": "MailFilterManager.jsx",
+        "MailFilterManagerEditor": "MailFilterManagerEditor.jsx",
+        "MailForms": "mailForms.jsx",
+        "MailMessage": "MailMessage.jsx",
+        "MailPanel": "MailPanel.jsx",
+        "MailPanelNode": "MailPanelNode.jsx",
+        "MailSearch": "MailSearch.jsx",
+        "MailSearchList": "MailSearchList.jsx",
+        "MailSearchOptions": "MailSearchOptions.jsx",
+        "MailSettings": "mailSettings.jsx",
+        "MailView": "MailView.jsx",
+        "Main": "main.jsx",
+        "MainBar": "MainBar.jsx",
+        "MainDialog": "mainDialog.jsx",
+        "MediaPermissionDialog": "mediaPermissionDialog.jsx",
+        "MediaPermissionNotificator": "mediaPermissionNotificator.jsx",
+        "Menu": "menu/Menu.jsx",
+        "MenuItem": "MenuItem.jsx",
+        "MenuType": "menuType.jsx",
+        "MessageBody": "MessageBody.jsx",
+        "MessageHeader": "MessageHeader.jsx",
+        "Modal": "Modal.jsx",
+        "MouseGestures": "MouseGestures.jsx",
+        "NavigationButton": "NavigationButton.jsx",
+        "NetworkSettings": "networkSettings.jsx",
+        "NotesEditor": "NotesEditor.jsx",
+        "NotesPanel": "notesPanel.jsx",
+        "NotesTree": "notesTree.jsx",
+        "NotificationPermissionDialog": "notificationPermissionDialog.jsx",
+        "NotificationPermissionNotificator": "notificationPermissionNotificator.jsx",
+        "OmniDropdown": "omnidropdown.jsx",
+        "OpenSessionDialog": "openSessionDialog.jsx",
+        "PageActionChooser": "PageActionChooser.jsx",
+        "PageloadProgress": "PageloadProgress.jsx",
+        "Panel": "components/panels/panel.jsx",
+        "PanelSettings": "settings/panel/Panel.jsx",
+        "PopupBlockerDialog": "popupblockerDialog.jsx",
+        "PopupBlockerNotificator": "popupblockerNotificator.jsx",
+        "PopupContents": "PopupContents.jsx",
+        "PopupWindow": "popup.jsx",
+        "Privacy": "privacy.jsx",
+        "QCHistoryItem": "quickCommands/HistoryItem.jsx",
+        "QCTitleItem": "quickCommands/TitleItem.jsx",
+        "QuickCommandItem": "quickCommands/CommandItem.jsx",
+        "QuickCommandItemObsolete": "quickCommands/quickCommandItem.jsx", //todo: remove after 1.11final
+        "QuickCommandList": "QuickCommandList.jsx",
+        "QuickCommands": "quickCommands.jsx",
+        "QuickCommandSearch": "QuickCommandSearch.jsx",
+        "RadioGroup": "RadioGroup.jsx",
+        "ReaderModePanel": "ReaderModePanel.jsx",
+        "SavedPasswordItem": "savedPasswordItem.jsx",
+        "SavedPasswords": "savedPasswords.jsx",
+        "SaveSessionDialog": "saveSessionDialog.jsx",
+        "SearchEngines": "searchEngines.jsx",
+        "SearchField": "searchfield.jsx",
+        "SessionTree": "SessionTree.jsx",
+        "Settings": "settings/Settings.jsx",
+        "SetVivaldiDefaultBrowserDlg": "setVivaldiDefaultBrowserDlg.jsx",
+        "SetVivaldiDefaultSettings": "SetVivaldiDefaultSettings.jsx",
+        "ShortCutEditSetting": "KeyboardShortcutEditSetting.jsx",
+        "ShowKeyboardShortcuts": "showKeyboardShortcuts.jsx",
+        "SiteInfoButton": "SiteInfoButton.jsx",
+        "SlideBar": "SlideBar.jsx",
+        "SmoothScrollingSetting": "smoothscrolling.jsx",
+        "SortingSelector": "SortingSelector.jsx",
+        "SpecificSession": "specificSession.jsx",
+        "SpecificSessionItem": "specificSessionItem.jsx",
+        "StartPage": "components/startpage/StartPage.jsx",
+        "StartPageSettings": "settings/startpage/StartPage.jsx",
+        "StartPageTopMenu": "startpage-topmenu.jsx",
+        "StartupSettingsSection": "startupSettingsSection.jsx",
+        "StartupSettings": "settings/startup/StartupSetting", //todo: replace with "settings/startup/StartupSettings.jsx"
+        "StatusInfo": "StatusInfo.jsx",
+        "StatusToolbar": "StatusToolbar.jsx",
+        "sync": "sync.jsx",
+        "SyncDialog": "SyncDialog.jsx",
+        "Tab": "Tab.jsx",
+        "TabActivation": "tabActivation.jsx",
+        "TabBar": "TabBar.jsx",
+        "TabCycling": "tabCycling.jsx",
+        "TabMuting": "tabMuting.jsx",
+        "TabOpen": "tabOpen.jsx",
+        "TabPageSetting": "TabPage.jsx",
+        "TabPinning": "tabPinning.jsx",
+        "TabPositionPreview": "TabPositionPreview.jsx",
+        "TabProgressIndicator": "TabProgressIndicator.jsx",
+        "TabSelection": "tabSelection.jsx",
+        "TabsSettingSection": "tabsSettingSection.jsx",
+        "TabStacking": "tabStacking.jsx",
+        "TabStrip": "TabStrip.jsx",
+        "TabToLinksSetting": "TabToFocus.jsx",
+        "ThemeColors": "ThemeColors.jsx",
+        "ThemeEditor": "ThemeEditor.jsx",
+        "ThemePreview": "ThemePreview.jsx",
+        "Themes": "Themes.jsx",
+        "ThemeScheduling": "ThemeScheduling.jsx",
+        "Thumbnail": "Thumbnail.jsx",
+        "TitleBar": "titlebar.jsx",
+        "ToggleImages": "ToggleImages.jsx",
+        "ToggleTiling": "ToggleTiling.jsx",
+        "Tooltip": "Tooltip.jsx",
+        "TopMenu": "TopMenu.jsx",
+        "Trash": "Trash.jsx",
+        "TreeItem": "TreeItem.jsx",
+        "TypedHistory": "typedhistory.jsx",
+        "UrlBar": "urlbar.jsx",
+        "UrlField": "urlfield.jsx",
+        "VisualTabSwitcher": "VisualTabSwitcher.jsx",
+        "VivaldiDropdown": "common/Dropdown.jsx",
+        "VivaldiSettingsWrapper": "InsertVivaldiSettings.jsx",
+        "VivaldiTreeList": "VivaldiTreeList.jsx",
+        "WebPageCollection": "WebPageCollection.jsx",
+        "WebPageContent": "WebPageContent.jsx",
+        "webpagesPlugins": "webpagesPlugins.jsx",
+        "WebpagesSettingSection": "webpagesSettingSection.jsx",
+        "WebPanel": "webPanel.jsx",
+        "WelcomePage": "welcome.jsx",
+        "WelcomeStep": "WelcomeStep.jsx",
+        "ZoomIndicator": "ZoomIndicator.jsx",
+    };
+
     var moduleSignatures = {
-        "ActionLog": ['ActionLog.jsx'],
-        "AddressBar": ['AddressBar.jsx'],
         "AddressBarShortcuts": ['("Open Address in New Tab")'],
-        "AttachmentContainer": ['notesAttachmentContainer.jsx'],
-        "AttachmentItem": ['notesAttachment.jsx'],
-        "AudioIcon": ['AudioIcon.jsx'],
-        "autoupdate": ['autoupdate.jsx'],
-        "BackgroundTaskStatus": ['BackgroundTaskStatus.jsx'],
-        "BackgroundTaskStatusList": ['BackgroundTaskStatusList.jsx'],
-        "BiscuitSettings": ['biscuitMode.jsx'],
-        "BlockedContentNotificator": ['BlockedContentNotificator.jsx'],
-        "BookmarkBar": ['bookmarkBar.jsx'],
-        "BookmarkEditItem": ['BookmarkEditItem.jsx'],
-        "BookmarksBar": ['bookmarksbar.jsx'],
-        "BookmarksBarItem": ['bookmarksbarItem.jsx'],
-        "BookmarkSettings": ['bookmarkSettings.jsx'],
-        "BookmarksFoldersFlatList": ['bookmarksfoldersflatlist.jsx'],
-        "BookmarksManager": ['bookmarks-manager.jsx'],
         "BookmarksMock": ['otherBookmarksFolder', '"Other Bookmarks"', '.bookmarkItems'],
-        "BookmarksPanel": ['bookmarksPanel.jsx'],
-        "BookmarkTree": ['BookmarkTree.jsx'],
-        "capture": ['capture.jsx'],
-        "CaptureImages": ['CaptureImages.jsx'],
         "categoryConstantToString": ['"Mail"', '"Page"'],
         "chroma": ['"Logarithmic scales are only possible for values > 0"'],
         "classnames": ["http://jedwatson.github.io/classnames"],
-        "ClearBrowsingHistory": ['ClearBrowsingHistory.jsx'],
-        "ClearBrowsingHistoryDialog": ['ClearBrowsingHistoryDialog.jsx'],
-        "ColorPicker": ['ColorPicker.jsx'],
-        "ConfigureSingleKeyShortcut": ['configureSingleKeyShortcuts.jsx'],
-        "ConfirmationDlg": ['ConfirmationDlg.jsx'],
-        "ConfirmOpenBookmarksDialog": ['confirmOpenBookmarksDialog.jsx'],
-        "ContactPhotoPicker": ['ContactPhotoPicker.jsx'],
-        "ContactsPanel": ['ContactsPanel.jsx'],
-        "ContactTree": ['ContactTree.jsx'],
-        "ContactView": ['ContactView.jsx'],
-        "CookieItem": ['cookieItem.jsx'],
-        "CookieManager": ['cookieManager.jsx'],
-        "CookieManagerDialog": ['cookieManagerDlg.jsx'],
-        "CookieSettings": ['cookieSettings.jsx'],
-        "CreateSearchEngine": ['createSearchEngine.jsx'],
-        "CreateSearchEngineDlg": ['createSearchEngineDlg.jsx'],
         "css-layout": ['computeLayout:', 'fillNodes:'],
-        "DefaultGlobalZoom": ['defaultGlobalZoom.jsx'],
         "dexie": ['"Dexie specification of currently installed DB version is missing"'],
-        "DialogRenderWrapper": ['dialogRenderWrapper.jsx'],
-        "dockedDevTools": ['dockedDevTools.jsx'],
-        "DownloadDialog": ['downloadDialog.jsx'],
-        "DownloadItem": ['DownloadItem.jsx'],
-        "DownloadPanel": ['DownloadPanel.jsx'],
-        "DownloadSettings": ['downloads.jsx'],
-        "DownloadTree": ['downloadTree.jsx'],
         "EditableSpeedDialTitle": ['editable-title-container'],
-        "ExperimentItem": ['ExperimentItem.jsx'],
-        "Experiments": ['experiments.jsx'],
-        "ExtensionActionPopup": ['ExtensionActionPopup.jsx'],
-        "ExtensionActionToolbar": ['ExtensionActionToolbar.jsx'],
-        "FindInPage": ['find-in-page.jsx'],
-        "FocusTrap": ['FocusTrap.jsx'],
-        "FolderIcon": ['FolderIcon.jsx'],
-        "Fonts": ['fonts.jsx'],
-        "FullKeyAccess": ['FullKeyAccess.jsx'],
-        "FullscreenInfoBubble": ['fullscreeninfobubble.jsx'],
-        "FullscreenSettings": ['fullscreen.jsx'],
-        "HistoryFolder": ['HistoryFolder.jsx'],
-        "HistoryItem": ['HistoryItem.jsx'], // quickCommands/HistoryItem.jsx, history/HistoryItem.jsx
-        "HistoryManager": ['HistoryManager.jsx'],
-        "HistoryMoreInfo": ['HistoryMoreInfo.jsx'],
-        "HistoryPanel": ['HistoryPanel.jsx'],
-        "HistorySearch": ['HistorySearch.jsx'],
-        "HistorySetting": ['HistorySetting.jsx'],
         "HistoryStoreSubscription": ['_onStoreChange:', 'historyFilter:', '"searchResultsReady"'],
-        "HistoryStoreSubscription": ['HistoryStoreSubscription.jsx'],
-        "HistoryTree": ['HistoryTree.jsx'],
-        "HomePageSetting": ['homePageSetting.jsx'],
-        "importBookmarks": ['importBookmarks.jsx'],
         "InputMixin": ['renderOption:', 'renderInputField:'],
-        "InsertThemeWrapper": ['InsertTheme.jsx'],
-        "InternalPage": ['InternalPage.jsx'],
-        "JavascriptDialog": ['javascriptDialog.jsx'],
-        "LanguageSetting": ['languageSetting.jsx'],
-        "LocationPermissionDialog": ['locationPermissionDialog.jsx'],
-        "LocationPermissionNotificator": ['locationPermissionNotificator.jsx'],
-        "MailAccountForm": ['MailAccountForm.jsx'],
-        "MailAccountRemovalDlg": ['MailAccountRemovalDlg.jsx'],
-        "MailAccountSaveDlg": ['MailAccountSaveDlg.jsx'],
-        "MailBar": ['MailBar.jsx'],
-        "MailBarComposer": ['MailBarComposer.jsx'],
-        "MailBarList": ['MailBarList.jsx'],
-        "MailComposer": ['MailComposer.jsx'],
-        "MailCustomFlagDlg": ['MailCustomFlagDlg.jsx'],
-        "MailDetail": ['MailDetail.jsx'],
-        "MailEntryHorizontal": ['MailEntryHorizontal.jsx'],
-        "MailEntryVertical": ['MailEntryVertical.jsx'],
-        "MailFilterManager": ['MailFilterManager.jsx'],
-        "MailFilterManagerEditor": ['MailFilterManagerEditor.jsx'],
-        "MailForms": ['mailForms.jsx'],
-        "MailPanelNode": ['MailPanelNode.jsx'],
-        "MailSearchOptions": ['MailSearchOptions.jsx'],
         "MailSender": ['"Failed to send message"'],
-        "MailSettings": ['mailSettings.jsx'],
-        "MainBar": ['MainBar.jsx'],
-        "MainDialog": ['mainDialog.jsx'],
-        "MediaPermissionDialog": ['mediaPermissionDialog.jsx'],
-        "MediaPermissionNotificator": ['mediaPermissionNotificator.jsx'],
-        "MenuItem": ['MenuItem.jsx'],
-        "MenuType": ['menuType.jsx'],
-        "MessageBody": ['MessageBody.jsx'],
-        "MessageHeader": ['MessageHeader.jsx'],
-        "Modal": ['Modal.jsx'],
         "Motion": ['startAnimationIfNecessary', 'currentVelocity:'],
-        "MouseGestures": ['MouseGestures.jsx'],
         "NativeResizeObserver": ['NativeResizeObserver.js'],
-        "NavigationButton": ['NavigationButton.jsx'],
-        "NetworkSettings": ['networkSettings.jsx'],
-        "NotesPanel": ['notesPanel.jsx'],
-        "NotesTree": ['notesTree.jsx'],
-        "NotificationPermissionDialog": ['notificationPermissionDialog.jsx'],
-        "NotificationPermissionNotificator": ['notificationPermissionNotificator.jsx'],
         "OkChangeButton": ['("OK")', '("Change")'],
-        "OmniDropdown": ['omnidropdown.jsx'],
-        "OpenSessionDialog": ['openSessionDialog.jsx'],
-        "PageActionChooser": ['PageActionChooser.jsx'],
-        "PageloadProgress": ['PageloadProgress.jsx'],
-        "Panel": ['panel.jsx'],
-        "Panels": ['panels.jsx'],
         "path": ["Arguments to path.resolve must be strings"],
-        "PopupBlockerDialog": ['popupblockerDialog.jsx'],
-        "PopupBlockerNotificator": ['popupblockerNotificator.jsx'],
-        "PopupContents": ['PopupContents.jsx'],
-        "PopupWindow": ['popup.jsx'],
-        "Privacy": ['privacy.jsx'],
+        "Portal": ["getOverlayDOMNode(): A component must be mounted to have a DOM node"],
         "process": ["process.binding is not supported"],
         "progress_indicator": ['.createElement("progress"', 'bar:', 'circular:'],
         "punycode": ['"Overflow: input needs wider integers to process",'],
-        "QuickCommandItem": ['quickCommandItem.jsx'],
-        "QuickCommands": ['quickCommands.jsx'],
-        "RadioGroup": ['RadioGroup.jsx'],
-        "RestartBrowserDialog": ['RestartBrowserDialog.jsx'],
-        "SavedPasswordItem": ['savedPasswordItem.jsx'],
-        "SavedPasswords": ['savedPasswords.jsx'],
-        "SaveSessionDialog": ['saveSessionDialog.jsx'],
-        "SearchEngines": ['searchEngines.jsx'],
-        "SearchField": ['searchfield.jsx'],
-        "SessionTree": ['SessionTree.jsx'],
-        "SetVivaldiDefaultBrowserDlg": ['setVivaldiDefaultBrowserDlg.jsx'],
-        "ShortCutEditSetting": ['KeyboardShortcutEditSetting.jsx'],
-        "ShortcutKeys": ['shortcutKeys.jsx'],
-        "ShowKeyboardShortcuts": ['showKeyboardShortcuts.jsx'],
-        "SiteInfoButton": ['SiteInfoButton.jsx'],
-        "SlideBar": ['SlideBar.jsx'],
-        "SmoothScrollingSetting": ['smoothscrolling.jsx'],
-        "SortingSelector": ['SortingSelector.jsx'],
-        "SpecificSession": ['specificSession.jsx'],
-        "SpecificSessionItem": ['specificSessionItem.jsx'],
         "SpeedDial": ["handleRemoveDial"],
         "SpeedDialAddButton": ['"openAddSpeedDial"', '"thumbnail-image"'],
         "SpeedDialAddContent": ["dials dial-suggestions"],
         "SpeedDialDrawer": ["toggleStartpageDrawer", '"add-dial-submit primary"'],
         "SpeedDialView": ["startpage-folder-navigation"],
-        "StartPage": ['startpage\\\\StartPage.jsx'],
-        "StartPageTopMenu": ['startpage-topmenu.jsx'],
-        "StartupSetting": ['startupSetting.jsx'],
-        "StartupSettingSection": ['startupSettingSection.jsx'],
-        "StatusInfo": ['StatusInfo.jsx'],
-        "StatusToolbar": ['StatusToolbar.jsx'],
         "StorageMock": ['StorageMock', 'getBytesInUse:'],
-        "sync": ['sync.jsx'],
-        "SyncDialog": ['SyncDialog.jsx'],
-        "Tab": ['Tab.jsx'],
-        "TabActivation": ['tabActivation.jsx'],
-        "TabBar": ['TabBar.jsx'],
-        "TabCycling": ['tabCycling.jsx'],
-        "TabMuting": ['tabMuting.jsx'],
-        "TabOpen": ['tabOpen.jsx'],
-        "TabPageSetting": ['TabPage.jsx'],
-        "TabPinning": ['tabPinning.jsx'],
-        "TabPositionPreview": ['TabPositionPreview.jsx'],
-        "TabProgressIndicator": ['TabProgressIndicator.jsx'],
-        "TabSelection": ['tabSelection.jsx'],
         "TabsMock": ['captureVisibleTab'],
-        "TabsSettingSection": ['tabsSettingSection.jsx'],
-        "TabStacking": ['tabStacking.jsx'],
-        "TabStrip": ['TabStrip.jsx'],
-        "TabToLinksSetting": ['TabToFocus.jsx'],
-        "ThemePreview": ['ThemePreview.jsx'],
-        "Themes": ['Themes.jsx'],
-        "ThemeScheduling": ['ThemeScheduling.jsx'],
-        "Thumbnail": ['Thumbnail.jsx'],
-        "TitleBar": ['titlebar.jsx'],
-        "ToggleImages": ['ToggleImages.jsx'],
-        "ToggleTiling": ['ToggleTiling.jsx'],
-        "Tooltip": ['Tooltip.jsx'],
-        "Trash": ['Trash.jsx'],
-        "TreeItem": ['TreeItem.jsx'],
-        "TypedHistory": ['typedhistory.jsx'],
+        "ThemeScheduleDaemon": ["getTimerByDate:", "this.state.THEMES_SCHEDULE"],
         "url": [".prototype.parseHost"],
-        "UrlBar": ['urlbar.jsx'],
-        "UrlField": ['urlfield.jsx'],
         "VelocityComponent": ['_clearVelocityCache'],
         "VelocityTransitionGroupChild": ['.CSS.setPropertyValue', '_parseAnimationProp'],
-        "VisualTabSwitcher": ['VisualTabSwitcher.jsx'],
-        "VivaldiDefaultBrowser": ['setVivaldiDefaultSetting.jsx'],
-        "VivaldiSettingsWrapper": ['InsertVivaldiSettings.jsx'],
-        "WebPageCollection": ['WebPageCollection.jsx'],
-        "WebPageContent": ['WebPageContent.jsx'],
-        "webpagesPlugins": ['webpagesPlugins.jsx'],
-        "WebpagesSettingSection": ['webpagesSettingSection.jsx'],
-        "WebPanel": ['webPanel.jsx'],
-        "WelcomePage": ['welcome.jsx'],
-        "WelcomeStep": ['WelcomeStep.jsx'],
         "WindowsMock": ['getLastFocused', 'this.WINDOW_ID_CURRENT'],
-        "ZoomIndicator": ['ZoomIndicator.jsx'],
-        //order matters:
-        "AddressBarDropdown": ['AddressBarDropdown.jsx'],
-        "VivaldiDropdown": ['Dropdown.jsx'],
-        "ExtensionActionItem": ['ExtensionActionItem.jsx'],
-        "ActionItem": ['ActionItem.jsx'],
-        "TopMenu": ['TopMenu.jsx'],
-        "Menu": ['Menu.jsx'],
 
         "_ActionList_DataTemplate": ["CHROME_SET_SESSION:", "CHROME_TABS_ACTIVATED:"],
         "_ActionManager": ["runAction:"],
@@ -275,10 +304,10 @@ function processModules() {
         "_SearchSuggestActions": ["suggest:", ".SEARCH_SUGGEST_RESULT"],
         "_SessionManager": [".sessions.onChanged.addListener"],
         "_SettingsAppearance": ['"Use Native Window"'],
-        "_SettingsData_Common": ['["ctrl+shift+v"]', 'COMMAND_CLIPBOARD_PASTE_AS_PLAIN_TEXT_OR_PASTE_AND_GO:'],
-        "_SettingsData_MAC": ['["shift+meta+v"]', 'COMMAND_CLIPBOARD_PASTE_AS_PLAIN_TEXT_OR_PASTE_AND_GO:'],
+        "_SettingsData_Common": ['["ctrl+shift+v"]', 'COMMAND_CLIPBOARD_PASTE_AS_PLAIN_TEXT_OR_PASTE_AND_GO'],
+        "_SettingsData_MAC": ['["shift+meta+v"]', 'COMMAND_CLIPBOARD_PASTE_AS_PLAIN_TEXT_OR_PASTE_AND_GO'],
         "_SettingsData_Other": ['["ctrl+shift+w"]'],
-        "_SettingsMigration": ['"SETTINGS_MIGRATION_VERSION"'],
+        "_SettingsMigration": ['"SETTINGS_MIGRATION_VERSION"', 'configurable:'],
         "_SettingsMigration_1": ["preferenceKey:", '"vivaldi.home_page"'],
         "_SettingsMigration_2": ["keep_relations", ".TAB_CLOSE_ACTIVATION"],
         "_SettingsMigration_3": ['"Migrating Search Engines from"', ".SEARCH_ENGINES", '"to"'],
@@ -286,7 +315,6 @@ function processModules() {
         "_SettingsMigration_5": ["A9AF7AAEA7E", "AD6C08C471A"],
         "_SettingsMigration_6": [".TABCOLOR_BEHIND_TABS", "TABCOLOR_BEHIND_TABS:", "on", "Promise"],
         "_SettingsMigration_7": ['.getSync("THEMES_SYSTEM")', ".THEMES_USER", "THEMES_USER:", ".cloneDeep"],
-        "_SettingsStartPage": ['"Speed Dial Layout"'],
         "_SettingsTabOptions": ['"Use Unread Indicators"'],
         "_SettingsTabPosition": ['"Show Tab Bar"', '"Tab Bar Position"'],
         "_ShowMenu": [".showMenu.onUrlHighlighted.addListener("],
@@ -302,14 +330,13 @@ function processModules() {
         "_trydecodeURI": ["return decodeURI("],
         "_trydecodeURIComponent": ["return decodeURIComponent(", "catch"],
         "_TypedHistory": ['.NAVIGATION_ADD_TYPED_HISTORY:'],
-        "_TypedSearchHistory": ['getSearchEngine:', 'getSearchText:', 'getTypedSearchHistory:'],
+        "_TypedSearchHistory": ['getSearchText:', 'getTypedSearchHistory:'],
         "_UIActions": ["showConfirmOpenBookmarkDialog:"],
-        "_updatePage": ['.tabToPage', '.updatePage', 'JSON.parse(', '"favIconUrl"'],
+        "_updatePage": ['tabToPage', 'updatePage', '"favIconUrl"'],
         "_urlDecode": ['"%20"', '/\\+/g', "decodeURIComponent"],
         "_urlEncode": ["encodeURIComponent(", '"number"'],
         "_UrlFieldActions": ["setUrlfieldState:"],
         "_UrlUtility": [".getDisplayTitle", 'this._defaultMapDisplayUrlToUrl'],
-        "_UrlValidation": [".isInternalURL", ".ensureURLProtocol", ".hasUnknownProtocol"],
         "_UserAgentSpoofRules": ["navigator.userAgent.replace(/Vivaldi/,"],
         "_ViewActionHandler": [".TAB_NEW_TAB:"],
         "_VivaldiSettings": ["getKeysSync:", "getAllPrefs:"],
@@ -351,8 +378,6 @@ function processModules() {
         "_svg_menu_vivaldi": ['M10.428 5.038c-.42-.85.027-1.804.943-2.008.747-.167 1.518.386 1.617'],
         "_svg_notes_add_attachment": ['.436.28.97.7.97h5.95c.98 0 1.75-1.043 1.75-2.06 0-1.02-.77-1.82-1.75'],
         "_svg_notes_happynote": ['id="eye"'],
-        "_svg_notes_tree_note": ['2h10v12h-10v-12zm1 2h8v9h-8v-9zm1'],
-        "_svg_notes_tree_note_has_url": ['M13 8v-6h-10v12h7v2l2.5-2'],
         "_svg_pageactionchooser": ["M5.3 9.8L.8 6.5l4.6-3.3L6.6 5 4.2 6.4l2.3 1.7-1.2 1.6M10.7"],
         "_svg_panel_bookmarks": ["v-11h8v11l-4"],
         "_svg_panel_contacts": ["M15.6 19h5.4v-2.2c0-1.5-3-2.8-4.7-2.8-.7"],
@@ -388,9 +413,6 @@ function processModules() {
         "_svg_tabstrip_btn_newtab": ["M7 9h-4v-2h4v-4h2v4h4v2h-4v4h-2v-4zm-7-9v16h16v-16h-16z"],
         "_svg_tabstrip_btn_trashcan": ['"trashicon-content"'],
         "_svg_toggleimages_noimages": ['M16 2H0v12h16V2zM4.89'],
-        "_svg_vivaldi_horizontal_menu": ['id="horizontal-menu-button'],
-        "_svg_vivaldi_title": ['id="vivrect1"'],
-        "_svg_vivaldi_v": ['M14.726 7.446c-.537-1.023.035-2.164 1.2-2.41.948-.2'],
         "_svg_window_close": ['0h2v1H6V2zm1-1h2v1H7V1zM3'],
         "_svg_window_close_mac": ['window-close-glyph dpi-standard'],
         "_svg_window_close_win10": ['M10.2.5l-.7-.7L5 4.3.5-.2l-.7.7L4.3'],
@@ -400,6 +422,12 @@ function processModules() {
         "_svg_window_zoom": ['7h10v1H0V8zm0-6h1v6H0V2zm9'],
         "_svg_window_zoom_mac": ['window-zoom-glyph dpi-standard'],
         "_svg_window_zoom_win10": ['0H2v2H0v8h8V8h2V0H3zm4'],
+        //todo:
+        "_svg_notes_tree_note": ['2h10v12h-10v-12zm1 2h8v9h-8v-9zm1'],
+        "_svg_notes_tree_note_has_url": ['M13 8v-6h-10v12h7v2l2.5-2'],
+        "_svg_vivaldi_horizontal_menu": ['id="horizontal-menu-button'],
+        "_svg_vivaldi_title": ['id="vivrect1"'],
+        "_svg_vivaldi_v": ['M14.726 7.446c-.537-1.023.035-2.164 1.2-2.41.948-.2'],
 
         "react__invariant": ["Minified exception occurred; use the non-minified dev environment"],
         "react_AutoFocusUtils": ["focusDOMComponent:"],
@@ -479,39 +507,59 @@ function processModules() {
         "react_ViewportMetrics": ["currentScrollLeft:"],
     };
 
-    for (var modIndex in _modules) {
+    var slashre = new RegExp("\\\\\\\\", 'g');
 
-        //displayName
-        var fntxt = ('' + _modules[modIndex]);
-        var idx = fntxt.indexOf('displayName');
-        if (idx > -1) {
-            var n = fntxt.substring(idx - 1).match(/[^\.]displayName\s*[:=]\s*"(.*?)"/);
-            if (n) {
-                _moduleMap[n[1]] = modIndex;
-                _moduleNames[modIndex] = n[1];
+    for (var modIndex in _modules) {
+        var found = false;
+
+        function AddAndCheck(modIndex, moduleName) {
+            if (("undefined" !== typeof _moduleMap[moduleName]) && (_moduleMap[moduleName] != modIndex))
+                console.log('repeated module name "' + moduleName + '"');
+
+            _moduleMap[moduleName] = modIndex;
+            _moduleNames[modIndex] = moduleName;
+
+            return true;
+        }
+
+        var fntxt = _modules[modIndex].toString();
+        var fntxtPrepared = fntxt.replace(slashre, "/").toLowerCase();
+
+        for (var jsxModuleName in jsxNames) {
+            if (-1 !== fntxtPrepared.indexOf(jsxNames[jsxModuleName].toLowerCase())) {
+                found = AddAndCheck(modIndex, jsxModuleName);
+                if (fastProcessModules) delete jsxNames[jsxModuleName];
+                break;
             }
         }
 
+        if (fastProcessModules && found) continue;
+
         //signatures
         for (var moduleName in moduleSignatures) {
-            if (0 === moduleSignatures[moduleName].filter(function(i) {
-                    return -1 === fntxt.indexOf(i)
-                }).length) {
-
-                if (("undefined" !== typeof _moduleMap[moduleName]) && (_moduleMap[moduleName] != modIndex))
-                    console.log('jdhooks: repeated module name "' + moduleName + '"');
-
-                _moduleMap[moduleName] = modIndex;
-                _moduleNames[modIndex] = moduleName;
-
+            if (moduleSignatures[moduleName].every(function(i) {
+                    return -1 < fntxt.indexOf(i)
+                })) {
+                found = AddAndCheck(modIndex, moduleName);
+                if (fastProcessModules) delete moduleSignatures[moduleName];
                 break;
             }
         }
     }
 
+    function checkUnknown(obj) {
+        for (var moduleName in obj)
+            if (!_moduleMap[moduleName]) {
+                console.log('unknown module', moduleName);
+            }
+    }
+
+    checkUnknown(jsxNames);
+    checkUnknown(moduleSignatures);
+
     //wrappers
     for (var modIndex in _modules) {
-        var fntxt = ('' + _modules[modIndex]);
+        var fntxt = _modules[modIndex].toString();
         var n = fntxt.match(/\.exports\s*=\s*n\((\d+)\)/);
         if (n) {
             var wrapNum = n[1];
@@ -522,11 +570,6 @@ function processModules() {
             }
         }
     }
-
-    var unknownModules = {};
-    for (var sigModuleName in moduleSignatures)
-        if (!_moduleMap[sigModuleName])
-            console.log('jdhooks: unknown module', sigModuleName);
 };
 
 
@@ -550,7 +593,10 @@ function loadBundleFile(file) {
 loadBundleFile('background-common-bundle.js');
 loadBundleFile('vendor-bundle.js');
 var bundle = loadBundleFile('bundle.js');
+
+var time1 = new Date();
 processModules();
+console.log("modules have been processed in", new Date() - time1, "ms");
 
 module.exports = {
     numbyname: _moduleMap,
