@@ -2,32 +2,60 @@
 
     const fs = require('fs');
 
-    var _moduleMap = {};
-    var _moduleNames = {};
-    var _modules = {};
 
     const fastProcessModules = false;
 
+    let jdhooks = { _hooks: {}, _moduleMap: {}, _moduleNames: {}, _modules: [] }
+
+    let classNameCache = {}
+
+
     function makeSignatures() {
         let jsxNames = {
-            // "ActionLog": "ActionLog.jsx",
-            // "Appearance": "Appearance.jsx",
-            // "BlockedContentNotificator": "BlockedContentNotificator.jsx",
-            // "HistorySearch": "HistorySearch.jsx",
-            // "TitleBar": "titlebar.jsx",
-            // "TopMenu": "TopMenu.jsx",
+            "NativeResizeObserver": "vivaldi/NativeResizeObserver.js",
+            "settings_keywordFound": "settings/keywordFound.js",
         }
 
         let moduleSignatures = {
+            "chroma.js": ["chroma.js"],
+            "classnames": ["jedwatson.github.io/classnames"],
+            "Object.Assign": ["Object.assign cannot be called with null or undefined"],
+            "process": ["process.binding is not supported"],
+            "punycode": ['"Overflow: input needs wider integers to process",'],
+            "react-motion": ["startAnimationIfNecessary", "lastIdealVelocity"],
+            "React": ["react.production."],
+            "ReactDOM": ["react-dom.production."],
+            "scheduler": ["scheduler.production."],
+            "url": [".prototype.parseHost"],
+            "yoga-layout": ["computeLayout:", "fillNodes:"],
+            //"rrule.js": ["rrule.js"],
+            //"react-mosaic": ["MosaicActionsPropType", "Palantir Technologies"],
+
+            "_ActionList_DataTemplate": ["CHROME_SET_SESSION:", "CHROME_TABS_API:"],
             "_BookmarkBarActions": ["Error removing bookmark tree:"],
+            "_BookmarkStore": ["validateAsBookmarkBarFolder"],
+            "_CommandManager": ['emitChange("shortcut")'],
+            "_decodeDisplayURL": [".removeTrailingSlashWhenNoPath(", ".getDisplayUrl(", "decodeURI("],
+            "_getLocalizedMessage": [".i18n.getMessage"],
             "_getPrintableKeyName": ['"BrowserForward"', '"PrintScreen"'],
             "_KeyCodes": ["KEY_CANCEL:"],
+            "_MouseGesturesHandler": ["onMouseGestureDetection.addListener"],
+            "_NavigationInfo": ["getNavigationInfo", "NAVIGATION_SET_STATE"],
+            "_OnClickOutside": ["Component lacks a handleClickOutside(event) function for processing outside click events."],
+            "_PageActions": ["ERROR while creating new tab. Original message"],
+            "_PageStore": ["section=Speed-dials&activeSpeedDialIndex=0"],
             "_PageZoom": ["onUIZoomChanged.addListener"],
+            "_ProgressInfo": ["getProgressInfo", "PAGE_SET_PROGRESS"],
+            "_RazerChroma": ["Error setting Razer Chroma color"],
+            "_SettingsGet": ["Unknown prefs property:"],
+            "_SettingsPaths": ["vivaldi.downloads.update_default_download_when_saving_as"],
+            "_SettingsSet": ["Not known how to make event handler for pref "],
+            "_ShowMenu": ["menubarMenu.onAction.addListener", "containerGroupFolders"],
             "_ShowUI": ['document.getElementById("app")', "JS init startup"],
             "_UIActions": ["_maybeShowSettingsInWindow"],
+            "_UrlFieldActions": ["history.onVisitRemoved.addListener"],
             "_VivaldiSettings": ["_vivaldiSettingsListener"],
             "_WindowActions": [".windowPrivate.onMaximized"],
-
             // "_svg_addressbar_btn_backward": ["M17.6 20.4l-1.6 1.6-9-9 9-9 1.6 1.6-7.2 7.4 7.2 7.4z"],
             // "_svg_addressbar_btn_fastbackward": ["M19 6l-7 5.6v-5.6h-2v12h2v-5.6l7 5.6z"],
             // "_svg_addressbar_btn_fastforward": ["M10 6l7 5.6v-5.6h2v12h-2v-5.6l-7 5.6z"],
@@ -50,11 +78,11 @@
             // "_svg_menu_mail": ["3v10h14V3H1zm7"],
             // "_svg_menu_notes": ["2v12h10V2H3zm9 11H4V4h8v9z"],
             // "_svg_menu_settings": ["M12.55 8v.592l1.325 1.014c.088.084.177.253.088.338l-1.236"],
-            // "_svg_menu_vivaldi": ["M10.428 5.038c-.42-.85.027-1.804.943-2.008.747-.167 1.518.386 1.617"],
+            "_svg_menu_vivaldi": ["M10.9604 4.44569C10.4629 3.42529 10.9928 2.28123 12.0753 2.03561C12.9563 1.83607 13.8679 2.4994 13.9847 3.41546C14.0358 3.81793 13.958 4.18653 13.763 4"],
             "_svg_notes_add_attachment": [".436.28.97.7.97h5.95c.98 0 1.75-1.043 1.75-2.06 0-1.02-.77-1.82-1.75"],
             // "_svg_notes_happynote": ['id="eye"'],
             // "_svg_pageactionchooser": ["M5.3 9.8L.8 6.5l4.6-3.3L6.6 5 4.2 6.4l2.3 1.7-1.2 1.6M10.7"],
-            // "_svg_panel_bookmarks": ["v-11h8v11l-4"],
+            "_svg_panel_bookmarks": ["M16.2929 20.2929L13 17L9.70711 20.2929C9.07714 20.9229 8 20.4767 8 19.5858V6C8 5.44772 8.44772 5 9 5H17C17.5523 5 18 5.44772 18 6V19.5858C18 20"],
             // "_svg_panel_contacts": ["M15.6 19h5.4v-2.2c0-1.5-3-2.8-4.7-2.8-.7"],
             // "_svg_panel_downloads": ["M15 6h-4v5h-4l6 6 6-6h-4v-5zm-9"],
             "_svg_panel_downloads_btn_resume": ["M16 13l-6 5V8l6 5z"],
@@ -88,6 +116,7 @@
             // "_svg_tabstrip_btn_newtab": ["M7 9h-4v-2h4v-4h2v4h4v2h-4v4h-2v-4zm-7-9v16h16v-16h-16z"],
             "_svg_tabstrip_btn_trashcan": ['"trashicon-content"'],
             // "_svg_toggleimages_noimages": ["M16 2H0v12h16V2zM4.89"],
+            "_svg_vivaldi_title": ["M11 20c3.94 0 6.14 0 7.57-1.43S20 14.94 20 11s0-6.14-1.43-7.57S14.94 2 11 2 4.86 2 3.43 3.43 2 7.06 2 11s0 6.14 1.43 7.57S7.06 20 11 20"],
             "_svg_window_close": ["0h2v1H6V2zm1-1h2v1H7V1zM3"],
             "_svg_window_close_mac": ["window-close-glyph dpi-standard"],
             "_svg_window_close_win10": ["M10.2.5l-.7-.7L5 4.3.5-.2l-.7.7L4.3"],
@@ -101,46 +130,56 @@
             // "_svg_notes_tree_note": ["2h10v12h-10v-12zm1 2h8v9h-8v-9zm1"],
             // "_svg_notes_tree_note_has_url": ["M13 8v-6h-10v12h7v2l2.5-2"],
             // "_svg_vivaldi_horizontal_menu": ['id="horizontal-menu-button'],
-            // "_svg_vivaldi_title": ['id="vivrect1"'],
             // "_svg_vivaldi_v": ["M14.726 7.446c-.537-1.023.035-2.164 1.2-2.41.948-.2"],
         }
 
-        const slashre = new RegExp("\\\\\\\\", 'g')
+        function replaceAll(str, match, to) { return str.split(match).join(to) }
 
-        for (const modIndex in _modules) {
+        for (const modIndex in jdhooks._modules) {
             let found = false
 
             function AddAndCheck(modIndex, moduleName) {
-                if (("undefined" !== typeof _moduleMap[moduleName]) && (_moduleMap[moduleName] != modIndex))
-                    console.log(`repeated module name "${moduleName}"`)
+                if (("undefined" !== typeof jdhooks._moduleMap[moduleName]) && (jdhooks._moduleMap[moduleName] != modIndex))
+                    console.log(`jdhooks: repeated module name "${moduleName}"`)
 
-                if (_moduleNames[modIndex]) {
-                    console.log(`multiple names for module ${modIndex}: ${moduleName}, ${_moduleNames[modIndex]}...`)
+                if (jdhooks._moduleNames[modIndex]) {
+                    console.log(`jdhooks: multiple names for module ${modIndex}: ${moduleName}, ${jdhooks._moduleNames[modIndex]}...`)
                     return true
                 }
 
-                _moduleMap[moduleName] = modIndex
-                _moduleNames[modIndex] = moduleName
-
+                jdhooks._moduleMap[moduleName] = modIndex
+                jdhooks._moduleNames[modIndex] = moduleName
                 return true
             }
 
-            const fntxt = _modules[modIndex].toString()
-            const fntxtPrepared = fntxt.replace(slashre, "/").toLowerCase()
+            const fntxt = jdhooks._modules[modIndex].toString()
+            const fntxtPrepared = replaceAll(fntxt, "\\\\", "/")
 
-            const re = /components\/([\w\/]+?)\.jsx\"/gi
-            const matchJsxRe = fntxtPrepared.match(re)
-            if (matchJsxRe && matchJsxRe.length == 1) { AddAndCheck(modIndex, re.exec(fntxtPrepared)[1].replace(/\//g, "_")) }
+            if (!fastProcessModules) {
+                let match = /defineLocale\("(.*?)"/.exec(fntxtPrepared)
+                if (match) {
+                    AddAndCheck(modIndex, "locale_" + match[1])
+                }
+            }
+
+            let matches = Array.from(fntxtPrepared.matchAll(/components\/([\-\w\/]+?)\.js[x]?\"([\s\S]*?)\bclass\b\s*?([$\w]+)/gi))
+                .filter(x => x[2].indexOf(".js") === -1)
+                .map(x => [replaceAll(x[1], "/", "_"), x[3]])
+
+            if (matches.length > 0) { AddAndCheck(modIndex, matches[matches.length - 1][0]) }
+
+            for ([classReadableName, className] of matches) if (className != "extends") {
+                if (classNameCache[modIndex + className]) console.log("jdhooks: duplicated class table item", modIndex + className, classNameCache[modIndex + className], classReadableName)
+                classNameCache[className + "_" + modIndex] = classReadableName
+            }
 
             for (const jsxModuleName in jsxNames) {
-                if (-1 !== fntxtPrepared.indexOf(jsxNames[jsxModuleName].toLowerCase())) {
+                if (-1 !== fntxtPrepared.indexOf(jsxNames[jsxModuleName])) {
                     found = AddAndCheck(modIndex, jsxModuleName)
                     if (fastProcessModules) delete jsxNames[jsxModuleName]
                     break
                 }
             }
-
-
             if (fastProcessModules && found) continue
 
             //signatures
@@ -153,10 +192,11 @@
             }
         }
 
+
         function checkUnknown(obj) {
             for (const moduleName in obj)
-                if (!_moduleMap[moduleName]) {
-                    console.log('unknown module', moduleName);
+                if (!jdhooks._moduleMap[moduleName]) {
+                    console.log("jdhooks: unknown module", moduleName)
                 }
         }
 
@@ -164,15 +204,15 @@
         checkUnknown(moduleSignatures)
 
         //wrappers
-        for (const modIndex in _modules) {
-            var fntxt = _modules[modIndex].toString();
+        for (const modIndex in jdhooks._modules) {
+            var fntxt = jdhooks._modules[modIndex].toString();
             var n = fntxt.match(/\.exports\s*=\s*n\((\d+)\)/);
             if (n) {
                 var wrapNum = n[1];
-                if ("undefined" !== typeof _moduleNames[wrapNum]) {
-                    moduleName = _moduleNames[wrapNum] + '_wrapper';
-                    _moduleMap[moduleName] = modIndex;
-                    _moduleNames[modIndex] = moduleName;
+                if ("undefined" !== typeof jdhooks._moduleNames[wrapNum]) {
+                    moduleName = jdhooks._moduleNames[wrapNum] + '_wrapper';
+                    jdhooks._moduleMap[moduleName] = modIndex;
+                    jdhooks._moduleNames[modIndex] = moduleName;
                 }
             }
         }
@@ -189,7 +229,7 @@
         } else if (0 === fileContents.search(/^(!\s*function\((\w+)\)\s*\{)/)) {
             let bundleModules = {};
             eval(fileContents.replace(/^(!\s*function\((\w+)\)\s*\{)/, "$1bundleModules=$2;return;"));
-            for (const m in bundleModules) _modules[m] = bundleModules[m];
+            for (const m in bundleModules) jdhooks._modules[m] = bundleModules[m];
         } else {
             console.log('cannot parse ' + file);
         }
@@ -207,16 +247,16 @@
     loadBundleFile('vendor-bundle.js');
     var bundle = loadBundleFile('bundle.js');
 
-    window.webpackJsonp.forEach(mpack => { for (const [key, value] of Object.entries(mpack[1])) { _modules[key] = value } })
+    window.webpackJsonp.forEach(mpack => { for (const [key, value] of Object.entries(mpack[1])) { jdhooks._modules[key] = value } })
 
     var time1 = new Date();
     makeSignatures();
     console.log("modules have been processed in", new Date() - time1, "ms");
 
     module.exports = {
-        numbyname: _moduleMap,
-        namebynum: _moduleNames,
-        modules: _modules,
+        numbyname: jdhooks._moduleMap,
+        namebynum: jdhooks._moduleNames,
+        modules: jdhooks._modules,
         fileContents: bundle
     };
 
