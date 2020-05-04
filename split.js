@@ -1,48 +1,52 @@
-const fs = require('fs');
-const path = require('path');
-var bundle = require('./bundlereader.js');
+const fs = require('fs')
+const path = require('path')
+const bundle = require('./bundlereader.js')
 
-var beautify = require('js-beautify').js_beautify;
+const beautify = require('js-beautify').js_beautify
 
+const named_dir = "jsout_name"
+const numbered_dir = "jsout_num"
+const svg_dir = "svg"
 
-if (!fs.existsSync("jsout_name"))
-    fs.mkdirSync("jsout_name");
-if (!fs.existsSync("jsout_num"))
-    fs.mkdirSync("jsout_num");
+if (!fs.existsSync(named_dir)) fs.mkdirSync(named_dir)
+if (!fs.existsSync(numbered_dir)) fs.mkdirSync(numbered_dir)
+if (!fs.existsSync(svg_dir)) fs.mkdirSync(svg_dir)
 
-var filesSaved = {};
+let filesSaved = {}
 
-var bundleModulesCount = Object.keys(bundle.modules).length;
-var bundleModuleIndex = 0;
+const bundleModulesCount = Object.keys(bundle.modules).length
+let bundleModuleIndex = 0
 
 for (module in bundle.modules) {
 
-    process.stdout.write(++bundleModuleIndex + "/" + bundleModulesCount + '\r');
+    process.stdout.write(++bundleModuleIndex + "/" + bundleModulesCount + '\r')
 
-    var fname = "jsout_name/" + (undefined !== bundle.namebynum[module] ? bundle.namebynum[module] : module) + ".js";
-    var fnumname = "jsout_num/" + module + (undefined !== bundle.namebynum[module] ? "." + bundle.namebynum[module] : "") + ".js";
+    const fname = named_dir + "/" + (bundle.namebynum[module] ? bundle.namebynum[module] : module) + ".js"
+    const fnumname = numbered_dir + "/" + module + (bundle.namebynum[module] ? "." + bundle.namebynum[module] : "") + ".js"
+    const fsvgname = svg_dir + "/" + (bundle.namebynum[module] ? bundle.namebynum[module] : module) + ".svg"
 
-    var contents;
+    const contents = '' + bundle.modules[module]
 
-    contents = '' + bundle.modules[module];
+    let butifiedContents = beautify("//n(" + module + ")\n" + contents)
 
-    var n = null;
-    var nMatched = contents.replace(/\s/g, "").match(/function\([A-Za-z_\\$]+,[A-Za-z_\\$]+,([A-Za-z_\\$]+)\)/);
+    const nMatched = contents.replace(/\s/g, "").match(/function\([A-Za-z_\\$]+,[A-Za-z_\\$]+,([A-Za-z_\\$]+)\)/)
     if (nMatched) {
-        n = nMatched[1];
+        const requireFnName = nMatched[1]
+        butifiedContents = butifiedContents.replace(new RegExp('\\b' + requireFnName + '\\((\\d+)\\)', 'g'), function (str, modnum) {
+            if (undefined === bundle.namebynum[modnum]) return str
+            return requireFnName + '(' + modnum + ' /* ' + bundle.namebynum[modnum] + ' */)'
+        })
     }
 
-    contents = beautify("//n(" + module + ")\n" + contents);
-
-    if (n) {
-        contents = contents.replace(new RegExp('\\b' + n + '\\((\\d+)\\)', 'g'), function(str, modnum) {
-            if (undefined === bundle.namebynum[modnum]) return str;
-            return n + '(' + modnum + ' /* ' + bundle.namebynum[modnum] + ' */)';
-        });
+    if (contents.match(/\.exports\s*=\s*'[^']*?\<svg/g)) {
+        let moduleInfo = {}
+        new Function("return " + contents)()(moduleInfo, null)
+        if (moduleInfo.exports)
+            fs.writeFileSync(fsvgname, moduleInfo.exports, 'utf8')
     }
 
-    filesSaved[fname] = true;
+    filesSaved[fname] = true
 
-    fs.writeFileSync(fname, contents, 'utf8');
-    fs.writeFileSync(fnumname, contents, 'utf8');
+    fs.writeFileSync(fname, butifiedContents, 'utf8')
+    fs.writeFileSync(fnumname, butifiedContents, 'utf8')
 }
