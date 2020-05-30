@@ -16,7 +16,6 @@
         }
 
         let moduleSignatures = {
-            "autolinker": [".Autolinker", "`splitRegex` must have the 'g' flag set"],
             "BookmarkActions": ["Error removing bookmark tree:"],
             "buffer": ["The buffer module from node.js, for the browser"],
             "charenc": ["stringToBytes(unescape(encodeURIComponent("],
@@ -73,6 +72,8 @@
             "DownloadActions": ["_setSearchFilter", '"restartDownload"'],
             "EventEmitter": ["Possible EventEmitter memory leak detected"],
             "expr-eval": ['"IEXPR"', "with(this.functions) with (this.ternaryOps) with (this.binaryOps) with (this.unaryOps) { return"],
+            "flux-Dispatcher": ['._isDispatching', '"ID_"', "this._lastID++"],
+            "flux-FluxReduceStore": ['"FluxReduceStore"', ".prototype.getInitialState"],
             "highlight.js-languages-apache": ["keywords:", '"order deny allow setenv rewriterule rewriteengine rewritecond documentroot '],
             "highlight.js-languages-applescript": ["keywords:", '"AppleScript false linefeed return'],
             "highlight.js-languages-bash": ["keywords:", '"if then else elif fi for'],
@@ -110,6 +111,7 @@
             "immutable-devtools": ["@@__IMMUTABLE_RECORD__@@", "OrderedMapFormatter"],
             "immutable": ["@@__IMMUTABLE_ITERABLE__@@", '"@@iterator"', "__immutablehash__"],
             "keyMirror": ["keyMirror(...): Argument must be an object."],
+            "linkify": ["`splitRegex` must have the 'g' flag set"],//remarkable plugin
             "lodash-memoize": ['new TypeError("Expected a function")', ".Cache", ".apply(this,"],
             "lodash": ['"lodash"', "filter|find|map|reject"],
             "moment.js": ["use moment.updateLocale"],
@@ -168,64 +170,6 @@
             "react-virtualized": ["ReactVirtualized__Grid", "__reactInternalSnapshotFlag"],
             "React": ["react.production."],
             "ReactDOM": ["react-dom.production."],
-            "remarkable-common-entities": ["zwnj:", "RuleDelayed:"],
-            "remarkable-common-html_blocks": ['["article"', '"video"].forEach'],
-            "remarkable-common-html_re": ["r(\/(?:unquoted|single_quoted|double_quoted)\/)(\"unquoted\""],
-            "remarkable-common-url_schemas": ['"coap"', '"h323"'],
-            "remarkable-configs-commonmark": ["langPrefix:", '"abbr2"]'],
-            "remarkable-configs-default": ["langPrefix:", '"footnote_tail"]'],
-            "remarkable-configs-full": ["langPrefix:", "{}"],
-            "remarkable-helpers-normalize_link": ["decodeURI(", "encodeURI(", "replaceEntities"],
-            "remarkable-helpers-normalize_reference": ["trim().replace(/\\s+/g", ".toUpperCase()"],
-            "remarkable-helpers-parse_link_destination": [".unescapeMd", ".parser.validateLink"],
-            "remarkable-helpers-parse_link_label": [".labelUnmatchedScopes", "91", "93"],
-            "remarkable-helpers-parse_link_title": [".unescapeMd", ".linkContent", "34", "39"],
-            "remarkable-linkify": [".options.linkify", "/^mailto:/i"],
-            "remarkable-parser_block": [".prototype.tokenize", '"blockquote"'],
-            "remarkable-parser_core": ['"abbr"', '"abbr2"', ".prototype.process"],
-            "remarkable-parser_inline": ["footnote_inline", ".tokenize"],
-            "remarkable-renderer": [".renderInline", ".getBreak"],
-            "remarkable-ruler": [".prototype.getRules", "Rules manager: invalid rule name"],
-            "remarkable-rules": [".dt_close", '"paragraph_open"'],
-            "remarkable-rules_block-blockquote": [".blkIndent", '"blockquote_open"'],
-            "remarkable-rules_block-code": [".blkIndent", '"code"'],
-            "remarkable-rules_block-deflist": [".blkIndent", '"dl_open"'],
-            "remarkable-rules_block-fences": [".blkIndent", '"fence"'],
-            "remarkable-rules_block-footnote": [".blkIndent", '"footnote"'],
-            "remarkable-rules_block-heading": ['"heading_open"', ".skipCharsBack"],
-            "remarkable-rules_block-hr": ['"hr"', ".eMarks"],
-            "remarkable-rules_block-htmlblock": ['"htmlblock"', "\/^<([a-zA-Z]{1,15})[\\s\\\/>]\/"],
-            "remarkable-rules_block-lheading": [".blkIndent", '"heading_open"'],
-            "remarkable-rules_block-list": [".blkIndent", '"ordered_list_open"'],
-            "remarkable-rules_block-paragraph": [".blkIndent", '"paragraph"', '"paragraph_close"'],
-            "remarkable-rules_block-state_block": [".blkIndent", ".prototype.skipCharsBack"],
-            "remarkable-rules_block-table": [".blkIndent", '"tbody_close"'],
-            "remarkable-rules_core-abbr": [".inlineMode", ".abbreviations", 'paragraph_close'],
-            "remarkable-rules_core-abbr2": [".env.abbreviations", ".env.abbrRegExp"],
-            "remarkable-rules_core-block": [".block.parse", ".src.replace(/\\n/g,"],
-            "remarkable-rules_core-footnote_tail": [".env.footnotes", ".env.footnotes.list", '"paragraph_close"'],
-            "remarkable-rules_core-inline": [".inline.parse("],
-            "remarkable-rules_core-references": [".references", 'indexOf("]:")'],
-            "remarkable-rules_core-replacements": [".options.typographer", ".replace(/(^|[^-])---([^-]|$)/gm,"],
-            "remarkable-rules_core-smartquotes": [".options.quotes["],
-            "remarkable-rules_inline-autolink": ["parser.validateLink", "link_close"],
-            "remarkable-rules_inline-backticks": ['"code"', ".src.charCodeAt"],
-            "remarkable-rules_inline-del": [".options.maxNesting", '"del_close"'],
-            "remarkable-rules_inline-emphasis": [".options.maxNesting", '"em_close"'],
-            "remarkable-rules_inline-entity": ["\/^&#((?:x[a-f0-9]{1,8}|[0-9]{1,8}));\/i", ".isValidEntityCode"],
-            "remarkable-rules_inline-escape": ['"hardbreak"', "\"\\\\!\\\"#$%&\'()*+,.\/:;<=>?@[]^_`{|}~-\".split(\"\")"],
-            "remarkable-rules_inline-footnote_inline": ['"footnote_ref"', ".linkLevel++"],
-            "remarkable-rules_inline-footnote_ref": [".options.maxNesting", ".env.footnotes.list.length", "32", "10"],
-            "remarkable-rules_inline-htmltag": ['"htmltag"', ".HTML_TAG_RE"],
-            "remarkable-rules_inline-ins": [".options.maxNesting", '"ins_close"'],
-            "remarkable-rules_inline-links": ["options.maxNesting", ".linkLevel", '"image"', "parser.tokenize"],
-            "remarkable-rules_inline-mark": [".options.maxNesting", '"mark_close"'],
-            "remarkable-rules_inline-newline": ['"softbreak"', '"hardbreak"'],
-            "remarkable-rules_inline-state_inline": [".prototype.cacheGet", ".prototype.pushPending"],
-            "remarkable-rules_inline-sub": [".options.maxNesting", '"sub"'],
-            "remarkable-rules_inline-sup": [".options.maxNesting", '"sup"'],
-            "remarkable-rules_inline-text": ["case 10:", "case 123:", ".src.charCodeAt"],
-            "remarkable-utils": ["\/\\\\([\\\\!\"#$%&\'()*+,.\\\/:;<=>?@[\\]^_`{|}~-])\/g;"],
             "remarkable": ["Wrong `remarkable` preset, check name/content"],
             "scheduler": ["scheduler.production."],
             "SearchEngineActions": ["setDefaultForSpeedDial", '"SEARCH_ENGINE_COLLECTION"'],
@@ -266,7 +210,6 @@
             "_MouseGesturesHandler": ["onMouseGestureDetection.addListener"],
             "_NavigationInfo": ["getNavigationInfo", "NAVIGATION_SET_STATE"],
             "_NotesStore": ['"vivaldi/x-notes"'],
-            "_OnClickOutside": ["Component lacks a handleClickOutside(event) function for processing outside click events."],
             "_PageStore": ["section=Speed-dials&activeSpeedDialIndex=0"],
             "_PageZoom": ["onUIZoomChanged.addListener"],
             "_PanelStore": ["getSelectedPanel:", ".PANEL_SET_PANELS:"],
@@ -274,12 +217,13 @@
             "_PrefSet": ["Not known how to make event handler for pref "],
             "_ProgressInfo": ["getProgressInfo", "PAGE_SET_PROGRESS"],
             "_RazerChroma": ["Error setting Razer Chroma color"],
+            "_Search": ["withPageSelection:"],
             "_SearchEnginesStore": ['"vivaldi/x-search-engine"'],
             "_ShowMenu": ["menubarMenu.onAction.addListener", "containerGroupFolders"],
             "_TabSetMediaState": ["static setMediaState", '"PAGE_SET_MEDIASTATE"'],
             "_Theme": ["fgBgHighlight", "kThemeContrastMinimum"],
             "_TransitionGroup": ['"TransitionGroup"'],
-            "_UIActions": ["_maybeShowSettingsInWindow"],
+            "_UIActions": [".runtimePrivate.switchToGuestSession"],
             "_UrlFieldActions": ["history.onVisitRemoved.addListener"],
             "_VivaldiIcons": ["small:", "medium:", "large:"],
             "_WebViewStore": ["getActiveWebView()", ".WEBVIEW_CLEAR_IF_ACTIVE:"],
@@ -355,7 +299,7 @@
         function replaceAll(str, match, to) { return str.split(match).join(to) }
 
         function AddAndCheck(modIndex, moduleName) {
-            if (("undefined" !== typeof jdhooks._moduleMap[moduleName]) && (jdhooks._moduleMap[moduleName] != modIndex))
+            if (jdhooks._moduleMap[moduleName] && jdhooks._moduleMap[moduleName] != modIndex)
                 console.log(`jdhooks: repeated module name "${moduleName}"`)
 
             if (jdhooks._moduleNames[modIndex]) {
@@ -426,8 +370,10 @@
             for (const moduleName in moduleSignatures) {
                 if (moduleSignatures[moduleName].every(i => -1 < fntxt.indexOf(i))) {
                     found = AddAndCheck(modIndex, moduleName)
-                    if (fastProcessModules) delete moduleSignatures[moduleName]
-                    break
+                    if (fastProcessModules) {
+                        delete moduleSignatures[moduleName]
+                        break
+                    }
                 }
             }
         }
@@ -446,11 +392,11 @@
         //wrappers or svg
         for (const modIndex in jdhooks._modules) {
             const fntxt = jdhooks._modules[modIndex].toString()
-            let n = fntxt.match(/\.exports\s*=\s*n\((\d+)\)\s*[},]/)
+            let n = fntxt.match(/\.exports\s*=\s*n\((\d+)\)(\(\))?\s*[},]/)
             if (n) {
                 const wrapNum = n[1]
                 if ("undefined" !== typeof jdhooks._moduleNames[wrapNum]) {
-                    moduleName = jdhooks._moduleNames[wrapNum] + '_wrapper'
+                    moduleName = jdhooks._moduleNames[wrapNum] + (n[2]? '_instance':'_wrapper')
                     jdhooks._moduleMap[moduleName] = modIndex
                     jdhooks._moduleNames[modIndex] = moduleName
                 }
