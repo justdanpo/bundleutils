@@ -219,7 +219,7 @@
             "_RazerChroma": ["Error setting Razer Chroma color"],
             "_Search": ["withPageSelection:"],
             "_SearchEnginesStore": ['"vivaldi/x-search-engine"'],
-            "_ShowMenu": ["menubarMenu.onAction.addListener", "containerGroupFolders"],
+            "_ShowMenu": ["menubarMenu.onAction.addListener", "emphasized:"],
             "_TabSetMediaState": ["static setMediaState", '"PAGE_SET_MEDIASTATE"'],
             "_Theme": ["fgBgHighlight", "kThemeContrastMinimum"],
             "_TransitionGroup": ['"TransitionGroup"'],
