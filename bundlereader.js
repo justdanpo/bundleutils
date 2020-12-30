@@ -173,6 +173,7 @@
             "SearchEngineActions": { signature: ["setDefaultForSpeedDial", '"SEARCH_ENGINE_COLLECTION"'] },
             "setProgressState": { signature: ["setProgressState", '"PAGE_SET_PROGRESS"'] },
             "Startup": { signature: ['document.getElementById("app")', "JS init startup"] },
+            "StatusActions": { signature: [".STATUS_SET_STATUS", "setStatus("] },
             "SyncActions": { signature: ["setEncryptionPassword", '"SYNC_ENGINE_STATE_CHANGED"'] },
             "TrashActions": { signature: ["Error restoring tab:", "undeletePreviousTab"] },
             "turndown": { signature: ["is not a string, or an element/document/fragment node.", "turndown:"] },
@@ -199,7 +200,7 @@
             "_CSSTransitionGroup": { signature: ['"CSSTransitionGroup"'] },
             "_CSSTransitionGroupChild": { signature: ['"CSSTransitionGroupChild"', ".displayName"] },
             "_CSSTransitionGroupChild_flushOnNext": { signature: [".default.prototype.flushClassNameAndNodeQueueOnNextFrame"] },
-            "_decodeDisplayURL": { signature: [".getDisplayUrl(", "decodeURI("] },
+            "_decodeDisplayURL": { signature: [".getDisplayUrl(", "decodeURI("], exports: { "formatUrl": ["view-source:", ".getDisplayUrl"] } },
             "_getLocalizedMessage": { signature: [".i18n.getMessage"] },
             "_getPrintableKeyName": { signature: ['"BrowserForward"', '"PrintScreen"'] },
             "_HistoryStore": { signature: [".VIVALDI_HISTORY_INIT_FILTER:"] },
@@ -223,7 +224,12 @@
             "_TransitionGroup": { signature: ['"TransitionGroup"'] },
             "_UIActions": { signature: [".runtimePrivate.switchToGuestSession"] },
             "_UrlFieldActions": { signature: ["history.onVisitRemoved.addListener"] },
-            "_urlutils": { signature: ["Guest Profile Introduction"] },
+            "_urlutils": {
+                signature: ["Guest Profile Introduction"], exports: {
+                    "default": ["getDisplayUrl"],
+                    "urls": ["actionlog"]
+                }
+            },
             "_VivaldiIcons": { signature: ["small:", "medium:", "large:"] },
             "_WebViewStore": { signature: ["getActiveWebView()", ".WEBVIEW_CLEAR_IF_ACTIVE:"] },
             "_WindowStore": { signature: ['"Attempting to toggle toolbars for a window without minimal UI"'], exports: { "default": ["getVisibleUI"] } },
